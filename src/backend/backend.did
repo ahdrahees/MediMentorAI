@@ -1,0 +1,11 @@
+service: () -> {
+    add_chat: (record {content:text; role:text}, text) -> ();
+    create_new_chat: (record {content:text; role:text}) -> (text);
+    delete_chat: (text) -> ();
+    get_a_chat: (text) -> (opt vec record {content:text; role:text}) query;
+    get_chat_ids_by_user: () -> (opt vec text) query;
+    get_chats_by_user: () -> (vec record {messages:vec record {content:text; role:text}; chatId:text}) query;
+    greet: (text) -> (text) query;
+    setMessage: (text) -> ();
+    update_chat: (text, nat, record {content:text; role:text}) -> ();
+}
