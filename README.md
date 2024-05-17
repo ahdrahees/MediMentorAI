@@ -67,6 +67,9 @@ dfx canister --help
 If you want to test your project locally, you can use the following commands:
 
 ```bash
+# Installing Dependencies
+npm i
+
 # Starts the replica, running in the background
 dfx start --background
 
@@ -74,7 +77,7 @@ dfx start --background
 dfx deploy backend
 
 #Deploy intenet idenity canister
- dfx deploy internet_identity
+dfx deploy internet_identity
 ```
 
 Once the job completes, your application will be available at `http://localhost:8080?canisterId={asset_canister_id}`.
