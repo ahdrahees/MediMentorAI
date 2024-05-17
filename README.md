@@ -42,6 +42,16 @@ To learn more before you start working with baatcheet, see the following documen
 - [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
 - [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
 
+### Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- **dfx**: You have installed the latest version of the DFINITY Canister SDK, `dfx`. You can download it from the DFINITY SDK page. [installation guide](https://demergent-labs.github.io/azle/get_started.html#installation) 
+
+- **Node.js**: You have installed Node.js, version 18 or above.
+  
+Please ensure all these prerequisites are met before proceeding with the setup of the project.
+
 ## ⚠️ Disclaimer: Local Development with Gemini and Content Security Policy (CSP)
 
 Local Development with Gemini and Content Security Policy (CSP)
