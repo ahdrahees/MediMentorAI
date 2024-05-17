@@ -24,18 +24,28 @@ import {
 } from "azle";
 import { v4 as uuidv4 } from "uuid";
 
+// const Message = Record({
+//   role: text,
+//   content: text,
+// });
+
+// const QueryChat = Record({
+//   chatId: text,
+//   messages: Vec(Message),
+// });
+
 const Message = Record({
+  parts: Vec(Record({ text: text })),
   role: text,
-  content: text,
 });
+
 const QueryChat = Record({
-  chatId: text,
-  messages: Vec(Message),
+  chat_id: text,
+  chat_history: Vec(Message),
 });
+
 const ChatId = text;
 const Index = nat;
-
-let message = "";
 
 const chatsHistory = StableBTreeMap(10, ChatId, Vec(Message));
 const userRelatedChatIds = StableBTreeMap(10, Principal, Vec(ChatId));
@@ -56,9 +66,9 @@ export default Canister({
     return `Hello, ${name}!`;
   }),
 
-  create_new_chat: update([Message], ChatId, (newMessage) => {
+  create_new_chat: update([Vec(Message)], ChatId, (newMessages) => {
     const chatId = uuidv4();
-    chatsHistory.insert(chatId, [newMessage]);
+    chatsHistory.insert(chatId, [...newMessages]);
 
     const chatIdsOpt = userRelatedChatIds.get(ic.caller());
 
@@ -72,7 +82,7 @@ export default Canister({
     return chatId;
   }),
 
-  add_chat: update([Message, ChatId], Void, (message, chatId) => {
+  add_chat: update([Vec(Message), ChatId], Void, (messages, chatId) => {
     const chatOpt = chatsHistory.get(chatId);
     if (chatOpt.None === null && "None" in chatOpt) {
       return ic.trap("Chat didn't found");
@@ -80,7 +90,7 @@ export default Canister({
     const chat = chatOpt.Some;
 
     checkChatIdIsbyUserElseTrap(ic.caller(), chatId);
-    chat.push(message);
+    chat.push(...messages);
     chatsHistory.insert(chatId, chat);
   }),
 
@@ -101,14 +111,14 @@ export default Canister({
       return [];
     }
     const chats: Array<{
-      chatId: string;
-      messages: { role: string; content: string };
+      chat_id: string;
+      chat_history: { role: string; parts: [{ text: string }] }[];
     }> = [];
     // const chatIdsByUser = chatIdsByUserOpt.Some;
-    chatIdsByUserOpt.Some.forEach((chatId: string) => {
-      const chatOpt = chatsHistory.get(chatId);
+    chatIdsByUserOpt.Some.forEach((chat_id: string) => {
+      const chatOpt = chatsHistory.get(chat_id);
       if ("Some" in chatOpt) {
-        chats.push({ messages: chatOpt.Some, chatId });
+        chats.push({ chat_history: chatOpt.Some, chat_id });
       }
     });
 
@@ -123,7 +133,7 @@ export default Canister({
     }
   ),
 
-  setMessage: update([text], Void, (newMessage) => {
-    message = newMessage;
-  }),
+  // setMessage: update([text], Void, (newMessage) => {
+  //   message = newMessage;
+  // }),
 });

@@ -36,7 +36,7 @@
       "packtool": ""
     }
   },
-  "output_env_file": "src/frontend/.env",
+  "output_env_file": ".env",
   "version": 1,
   "networks": {
     "local": {
