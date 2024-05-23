@@ -103,8 +103,6 @@ export default Canister({
     return userRelatedChatIds.get(ic.caller());
   }),
 
-  delete_chat: update([ChatId], Void, (chatId) => {}),
-
   get_chats_by_user: query([], Vec(QueryChat), () => {
     const chatIdsByUserOpt = userRelatedChatIds.get(ic.caller());
     if ("None" in chatIdsByUserOpt) {
