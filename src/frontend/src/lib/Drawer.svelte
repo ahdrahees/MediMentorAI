@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
   import { Drawer, Button, CloseButton } from "flowbite-svelte";
   import { ClockSolid } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
 
   import ChatHistoryButton from "./ChatHistoryButton.svelte";
-  import { historyStore } from "./history.store";
+  import { historyStore, type HistoryData } from "./history.store";
+  import { onDestroy } from "svelte";
 
   let hidden1 = true;
   let transitionParams = {
@@ -38,7 +39,7 @@
       />
     </div>
     <div class="pb-20">
-      {#each $historyStore.reverse() as chatIdAndHistory}
+      {#each $historyStore.reverse() as chatIdAndHistory (chatIdAndHistory.chat_id)}
         <ChatHistoryButton
           {chatIdAndHistory}
           onClick={() => (hidden1 = true)}
