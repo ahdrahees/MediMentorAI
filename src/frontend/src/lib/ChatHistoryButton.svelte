@@ -1,9 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { tick } from "svelte";
   import { selectedHistoryStore } from "./SelectedHistory.store";
   import type { ChatHistory } from "./history.store";
-  import { page } from "$app/stores";
 
   export let chatIdAndHistory: {
     chat_id: string;

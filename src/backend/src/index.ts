@@ -4,21 +4,11 @@ import {
   text,
   Record,
   StableBTreeMap,
-  Variant,
   Vec,
-  None,
-  Some,
-  Ok,
-  Err,
   ic,
   Principal,
   Opt,
-  nat64,
-  Duration,
-  Result,
-  bool,
   Canister,
-  init,
   Void,
   nat,
 } from "azle";
@@ -48,15 +38,15 @@ const ChatId = text;
 const Index = nat;
 
 const chatsHistory = StableBTreeMap(10, ChatId, Vec(Message));
-const userRelatedChatIds = StableBTreeMap(10, Principal, Vec(ChatId));
+const userRelatedChatIds = StableBTreeMap(11, Principal, Vec(ChatId));
 
 function checkChatIdIsbyUserElseTrap(caller: Principal, chatId: string) {
   let chatIdsbyUserOpt = userRelatedChatIds.get(caller);
   if ("None" in chatIdsbyUserOpt) {
-    return ic.trap("Unautherised chat");
+    return ic.trap("Unauthorized chat");
   } else {
     if (!chatIdsbyUserOpt.Some.includes(chatId)) {
-      return ic.trap("Unautherised chat");
+      return ic.trap("Unauthorized chat");
     }
   }
 }
@@ -85,7 +75,7 @@ export default Canister({
   add_chat: update([Vec(Message), ChatId], Void, (messages, chatId) => {
     const chatOpt = chatsHistory.get(chatId);
     if (chatOpt.None === null && "None" in chatOpt) {
-      return ic.trap("Chat didn't found");
+      return ic.trap("Chat not found.");
     }
     const chat = chatOpt.Some;
 
