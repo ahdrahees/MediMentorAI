@@ -27,7 +27,6 @@
     buttonDisable = true;
     value = "";
     await onClick();
-    buttonDisable = false;
   }
 
   function handleKeyDown(event: KeyboardEvent) {
