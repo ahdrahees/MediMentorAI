@@ -1,31 +1,39 @@
 <script lang="ts">
   import { Textarea, Alert, ToolbarButton } from "flowbite-svelte";
   import {
-    ImageOutline,
-    FaceGrinOutline,
     PaperPlaneOutline,
-    CheckPlusCircleOutline,
-    CirclePlusSolid,
-    CirclePlusOutline,
     PlusOutline,
   } from "flowbite-svelte-icons";
   import { inputStore } from "./input.store";
 
   type Function = () => void;
-  export let onClick;
+  export let onClick : () => Promise<void>;
   export let onClickPlus;
 
   let value: string = "";
-  $: inputStore.set(value);
+  $: inputStore.set(value.trim());
 
-  $: buttonDisable = value.length === 0;
+  $: buttonDisable = value.trim().length === 0;
 
   function handleInputChange() {
     blockButtonIfInputIsEmpty();
   }
 
   function blockButtonIfInputIsEmpty() {
-    buttonDisable = value.length === 0;
+    buttonDisable = value.trim().length === 0;
+  }
+
+  async function handleFormSubmit() {
+    buttonDisable = true;
+    value = "";
+    await onClick();
+  }
+
+  function handleKeyDown(event: KeyboardEvent) {
+    if (event.key === "Enter" && !buttonDisable) {
+      event.preventDefault();
+      handleFormSubmit();
+    }
   }
 </script>
 
@@ -51,14 +59,10 @@
           placeholder="Your message..."
           bind:value
           on:input={handleInputChange}
+          on:keydown={handleKeyDown}
         />
         <ToolbarButton
-          on:click={async () => {
-            buttonDisable = true;
-            value = "";
-            await onClick();
-            buttonDisable = false;
-          }}
+          on:click={handleFormSubmit}
           type="submit"
           color="blue"
           class="rounded-full text-primary-600 dark:text-primary-500"

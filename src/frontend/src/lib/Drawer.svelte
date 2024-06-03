@@ -1,5 +1,5 @@
 <script>
-  import { Drawer, Button, CloseButton } from "flowbite-svelte";
+  import { Drawer, CloseButton } from "flowbite-svelte";
   import { ClockSolid } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
 
