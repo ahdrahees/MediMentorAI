@@ -103,6 +103,22 @@ export default Canister({
     return userRelatedChatIds.get(ic.caller());
   }),
 
+  delete_chat: update([ChatId], Void, (chatId) => {
+    let chatIdsOpt = userRelatedChatIds.get(ic.caller());
+    if ("Some" in chatIdsOpt) {
+      let chatIds: string[] = chatIdsOpt.Some;
+      let updatedChatIds = chatIds.filter((id) => {
+        if (id !== chatId) {
+          return id;
+        } else {
+          chatsHistory.remove(chatId);
+        }
+      });
+
+      userRelatedChatIds.insert(ic.caller(), updatedChatIds);
+    }
+  }),
+
   get_chats_by_user: query([], Vec(QueryChat), () => {
     const chatIdsByUserOpt = userRelatedChatIds.get(ic.caller());
     if ("None" in chatIdsByUserOpt) {
@@ -122,16 +138,4 @@ export default Canister({
 
     return chats;
   }),
-
-  update_chat: update(
-    [ChatId, Index, Message],
-    Void,
-    (chatId, index, message) => {
-      const index_ = Number(index);
-    }
-  ),
-
-  // setMessage: update([text], Void, (newMessage) => {
-  //   message = newMessage;
-  // }),
 });
