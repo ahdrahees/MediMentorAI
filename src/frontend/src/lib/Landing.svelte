@@ -10,15 +10,16 @@
     class="mb-4"
     customSize="text-3xl font-extrabold  md:text-5xl lg:text-6xl"
   >
-    Chat Like a Human (Almost): <Span
-      gradient
-      class="from-purple-600 to-sky-400">Baatcheet</Span
-    > - The AI You Can Talk To (Friendly & Playful)
+    Welcome to <Span gradient class="from-purple-600 to-sky-400"
+      >MediMentor AI</Span
+    > - Your Advanced Medical Education Assistant Discover the power of AI-driven
+    learning in medicine.
   </Heading>
   <P
-    >Baatcheet is an AI chat model powered by <Span
+    >MediMentor AI is an AI chat model powered by <Span
       class="from-purple-400 to-sky-600"
       gradient>Gemini Flash</Span
-    >, designed to have engaging and informative conversations</P
+    >, designed to have engaging and informative conversations about medical
+    field</P
   >
 </div>
